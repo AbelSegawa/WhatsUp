@@ -1,4 +1,17 @@
 pluginManagement {
+    def flutterSdkPath = {
+        def properties = new Properties()
+        def propertiesFile = new File(settingsDir, 'local.properties')
+        if (propertiesFile.exists()) {
+            propertiesFile.withReader('UTF-8') { reader -> properties.load(reader) }
+        }
+        def sdkPath = properties.getProperty('flutter.sdk')
+        assert sdkPath != null, "flutter.sdk not set in local.properties"
+        return sdkPath
+    }()
+
+    includeBuild("${flutterSdkPath}/packages/flutter_tools/gradle")
+
     repositories {
         google()
         mavenCentral()
@@ -10,17 +23,12 @@ plugins {
     id "dev.flutter.flutter-plugin-loader" version "1.0.0"
 }
 
-// Read the local properties to locate the exact path of the Flutter SDK on the build machine
-def localPropertiesFile = new File(rootProject.projectDir, "local.properties")
-def properties = new Properties()
-
-assert localPropertiesFile.exists()
-localPropertiesFile.withReader("UTF-8") { reader -> properties.load(reader) }
-
-def flutterSdkPath = properties.getProperty("flutter.sdk")
-assert flutterSdkPath != null, "flutter.sdk not set in local.properties"
-
-// This bridges Gradle to Flutter's native dependency loader engine safely
-includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
 
 include ':app'
