@@ -1,3 +1,4 @@
+// android/app/build.gradle
 plugins {
     id "com.android.application"
     id "org.jetbrains.kotlin.android"
@@ -20,8 +21,6 @@ android {
     namespace "com.tauseef.whatsappclone"
     compileSdk 34
 
-    ndkVersion flutter.ndkVersion
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -39,12 +38,6 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
-
-    buildTypes {
-        release {
-            signingConfig signingConfigs.debug
-        }
-    }
 }
 
 flutter {
@@ -52,16 +45,14 @@ flutter {
 }
 
 dependencies {
-    // Import the Firebase BoM
+    // Firebase Bill of Materials (BoM)
     implementation platform('com.google.firebase:firebase-bom:34.14.1')
 
-    // Add your Firebase products here
-    // Note: No need to specify version numbers when using the BoM
+    // Firebase products
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-firestore'
     implementation 'com.google.firebase:firebase-storage'
 
-    // Kotlin standard library
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
