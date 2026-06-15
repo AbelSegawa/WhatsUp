@@ -28,6 +28,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        // REQUIRED: Allows Gradle to find the Flutter engine artifacts
+        maven { url 'https://storage.googleapis.com/download.flutter.io' }
+        // REQUIRED: Allows Gradle to find external dependencies like flutter_sound_core
+        maven { url 'https://jitpack.io' }
     }
 }
 
