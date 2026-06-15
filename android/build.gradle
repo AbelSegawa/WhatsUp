@@ -1,15 +1,15 @@
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = '1.9.22' // Upgraded to support modern Gradle
     dependencies {
         // START: FlutterFire Configuration
-        classpath 'com.google.gms:google-services:4.3.10'
+        classpath 'com.google.gms:google-services:4.3.15'
         // END: FlutterFire Configuration
     }
 }
 
 plugins {
-    id "com.android.application" version "7.2.0" apply false
-    id "org.jetbrains.kotlin.android" version "1.7.10" apply false
+    id "com.android.application" version "8.1.0" apply false // Upgraded to match Flutter 3.44+
+    id "org.jetbrains.kotlin.android" version "1.9.22" apply false // Upgraded
     id "dev.flutter.flutter-gradle-plugin" apply false
 }
 
