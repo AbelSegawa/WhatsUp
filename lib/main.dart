@@ -9,7 +9,7 @@ import 'package:whatsapp_clone/shared/utils/shared_pref.dart';
 import 'package:whatsapp_clone/shared/utils/storage_paths.dart';
 import 'features/auth/views/welcome.dart';
 import 'features/home/views/base.dart';
-import 'theme/theme.dart';
+import 'theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
