@@ -9,23 +9,18 @@ import 'package:whatsapp_clone/shared/utils/shared_pref.dart';
 import 'package:whatsapp_clone/shared/utils/storage_paths.dart';
 import 'features/auth/views/welcome.dart';
 import 'features/home/views/base.dart';
-import 'package:whatsapp_clone/theme.dart';
+import 'theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp();
-
   await SharedPref.init();
   await IsarDb.init();
   await DeviceStorage.init();
 
   ErrorWidget.builder = (details) => CustomErrorWidget(details: details);
-  runApp(
-    const ProviderScope(
-      child: WhatsApp(),
-    ),
-  );
+
+  runApp(const ProviderScope(child: WhatsApp()));
 }
 
 class WhatsApp extends ConsumerWidget {
@@ -35,27 +30,23 @@ class WhatsApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       title: "WhatsUp",
-      initialRoute: '/',
-      theme: ref.read(lightThemeProvider),
-      darkTheme: ref.read(darkThemeProvider),
+      theme: ref.watch(lightThemeProvider),
+      darkTheme: ref.watch(darkThemeProvider),
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       home: StreamBuilder<auth.User?>(
         stream: ref.read(authRepositoryProvider).auth.authStateChanges(),
-        builder: (BuildContext context, snapshot) {
+        builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Scaffold(body: Center(child: CircularProgressIndicator()));
           }
-
           if (!snapshot.hasData) {
             return const WelcomePage();
           }
-
           final user = getCurrentUser();
           if (user == null) {
             return const WelcomePage();
           }
-
           return HomePage(user: user);
         },
       ),
@@ -66,10 +57,7 @@ class WhatsApp extends ConsumerWidget {
 class CustomErrorWidget extends StatelessWidget {
   final FlutterErrorDetails details;
 
-  const CustomErrorWidget({
-    super.key,
-    required this.details,
-  });
+  const CustomErrorWidget({super.key, required this.details});
 
   @override
   Widget build(BuildContext context) {
@@ -89,11 +77,7 @@ class CustomErrorWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(150),
                   color: colorTheme.appBarColor,
                 ),
-                child: Icon(
-                  Icons.error_outline_rounded,
-                  color: Colors.red[400],
-                  size: 50,
-                ),
+                child: Icon(Icons.error_outline_rounded, color: Colors.red[400], size: 50),
               ),
               const SizedBox(height: 25),
               Expanded(
@@ -112,20 +96,13 @@ class CustomErrorWidget extends StatelessWidget {
                           Text(
                             'OOPS!',
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20.0,
-                              color: Colors.red[400],
-                            ),
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.red[400]),
                           ),
                           const SizedBox(height: 20.0),
                           Text(
                             details.toString(),
                             textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              color: colorTheme.blueColor,
-                            ),
+                            style: TextStyle(fontSize: 12.0, color: colorTheme.blueColor),
                           ),
                         ],
                       ),
