@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:whatsapp_clone/features/auth/data/repositories/auth_repository.dart';
@@ -9,25 +8,22 @@ import 'package:whatsapp_clone/shared/utils/abc.dart';
 import 'package:whatsapp_clone/shared/utils/shared_pref.dart';
 import 'package:whatsapp_clone/shared/utils/storage_paths.dart';
 import 'features/auth/views/welcome.dart';
-
 import 'features/home/views/base.dart';
-import 'firebase_options.dart';
 
-import 'package:whatsapp_clone/theme/theme.dart';
+import 'package:whatsapp_clone/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // Use google-services.json instead of firebase_options.dart
+  await Firebase.initializeApp();
 
   await SharedPref.init();
   await IsarDb.init();
   await DeviceStorage.init();
 
   ErrorWidget.builder = (details) => CustomErrorWidget(details: details);
-  return runApp(
+  runApp(
     const ProviderScope(
       child: WhatsApp(),
     ),
@@ -49,6 +45,10 @@ class WhatsApp extends ConsumerWidget {
       home: StreamBuilder<auth.User?>(
         stream: ref.read(authRepositoryProvider).auth.authStateChanges(),
         builder: (BuildContext context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Scaffold(body: Center(child: CircularProgressIndicator()));
+          }
+
           if (!snapshot.hasData) {
             return const WelcomePage();
           }
@@ -83,9 +83,7 @@ class CustomErrorWidget extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(
-                height: 25,
-              ),
+              const SizedBox(height: 25),
               Container(
                 width: 100,
                 height: 100,
@@ -99,28 +97,20 @@ class CustomErrorWidget extends StatelessWidget {
                   size: 50,
                 ),
               ),
-              const SizedBox(
-                height: 25,
-              ),
+              const SizedBox(height: 25),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12.0,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Container(
                     decoration: BoxDecoration(
                       color: colorTheme.appBarColor,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
                       child: ListView(
                         children: [
-                          const SizedBox(
-                            height: 20.0,
-                          ),
+                          const SizedBox(height: 20.0),
                           Text(
                             'OOPS!',
                             textAlign: TextAlign.center,
@@ -130,9 +120,7 @@ class CustomErrorWidget extends StatelessWidget {
                               color: Colors.red[400],
                             ),
                           ),
-                          const SizedBox(
-                            height: 20.0,
-                          ),
+                          const SizedBox(height: 20.0),
                           Text(
                             details.toString(),
                             textAlign: TextAlign.start,
