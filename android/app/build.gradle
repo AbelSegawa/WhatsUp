@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace "com.tauseef.whatsappclone"
-    compileSdk 35  // was 34
+    compileSdk 36  // match Platform 36 you installed
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -21,8 +21,10 @@ android {
     defaultConfig {
         applicationId "com.tauseef.whatsappclone"
         minSdk 24
-        targetSdk 35  // was 34
+        targetSdk 36  // match compileSdk
         multiDexEnabled true
+        versionCode flutterVersionCode.toInteger()  // <-- add this
+        versionName flutterVersionName              // <-- add this
     }
 }
 
