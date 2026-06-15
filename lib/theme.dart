@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'color_theme.dart';
-import 'text_theme.dart';
+import 'theme/color_theme.dart';
+import 'theme/text_theme.dart';
 
 class CustomThemeData {
   final CustomTextTheme textTheme = CustomTextTheme();
